@@ -1,0 +1,72 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: yandex_parser
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/var/www
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - REDIS_HOST=redis
+      - ADMIN_EMAIL=admin@dailygrow.ru
+      - ADMIN_PASSWORD=sgoeijg022fj2gh
+      - ADMIN_NAME=Administrator
+      - APP_URL=http://localhost:8080
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+
+  db:
+    image: mariadb:10.6
+    container_name: yandex_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: yandex_redis
+    networks:
+      - app-network
+
+  migrate:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: php artisan migrate --seed --force
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - ADMIN_EMAIL=admin@dailygrow.ru
+      - ADMIN_PASSWORD=sgoeijg022fj2gh
+      - ADMIN_NAME=Administrator
+    networks:
+      - app-network
+    profiles:
+      - tools
+
+volumes:
+  dbdata:
+
+networks:
+  app-network:
+    driver: bridge
