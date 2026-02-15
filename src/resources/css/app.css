@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Mulish', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@font-face 
+{  
+    font-family: 'Mulish';  
+    src: url('/resources/css/Mulish-Medium.woff2') format('woff2')
+    url('/resources/css/Mulish-Medium.woff') format('woff'),
+    url('/resources/css/Mulish-Medium.ttf') format('opentype');  
+}  
