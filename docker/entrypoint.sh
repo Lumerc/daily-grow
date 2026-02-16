@@ -47,6 +47,8 @@ php artisan migrate --seed
 # 6. ЗАПУСКАЕМ SUPERVISOR
 exec /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
 
+sleep 10
+
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
