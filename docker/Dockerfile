@@ -28,12 +28,6 @@ WORKDIR /var/www
 # Копируем проект (но НЕ создаём файлы)
 COPY src/ .
 
-RUN npm install -g puppeteer-core ioredis
-
-# Фронтенд
-RUN npm install \
-    && php artisan ziggy:generate \
-    && npm run build
 
 # Копируем entrypoint (он будет создавать всё при запуске)
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh

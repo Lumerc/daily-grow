@@ -19,6 +19,17 @@ chown -R www-data:www-data /var/www/bootstrap/cache
 chown -R www-data:www-data /var/www/storage
 
 
+composer install --no-interaction --optimize-autoloader
+
+npm cache clean --force && rm -rf node_modules && rm -rf package-lock.json
+
+# Фронтенд
+npm install
+
+npm install puppeteer-core --unsafe-perm
+php artisan ziggy:generate 
+npm run build
+
 # 2. ГЕНЕРИРУЕМ APP_KEY, ЕСЛИ ОН ОТСУТСТВУЕТ
 
 echo "⚠️ APP_KEY not found, generating..."
@@ -26,17 +37,9 @@ php /var/www/artisan key:generate
 echo "✅ APP_KEY generated"
 
 
-# 3. УСТАНАВЛИВАЕМ ЗАВИСИМОСТИ, ЕСЛИ vendor ОТСУТСТВУЕТ
-
-composer install --no-interaction --optimize-autoloader
-echo "✅ Composer dependencies installed"
-
-
 # 4. УСТАНАВЛИВАЕМ NPM-ЗАВИСИМОСТИ И СОБИРАЕМ ФРОНТ, ЕСЛИ НЕТ МАНИФЕСТА
 
 php artisan migrate --seed
-
-sleep 10
 
 php artisan config:clear
 php artisan cache:clear
