@@ -1,6 +1,9 @@
 #!/bin/sh
+set -x  # Включаем подробный вывод
 
-exec > /var/log/entrypoint.log 2>&1
+echo "🚀 Entrypoint started at $(date)"
+exec > /proc/1/fd/1 2>/proc/1/fd/2
+#exec > /var/log/entrypoint.log 2>&1
 
 # 1. СОЗДАЁМ .env, ЕСЛИ ЕГО НЕТ
 echo "⚠️ .env not found, creating from example..."
