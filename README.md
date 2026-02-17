@@ -105,6 +105,7 @@ ADMIN_NAME=Administrator  //имя администратора
 APP_ENV=local //окружение для разработки
 APP_URL=http://localhost:8082 //или другой URL сайта + порт
 
+Порт который ожидает контейнер 8082, что также можно отредактировать в файле docker-compose.yml
 
 ## Для HTTPS
 APP_ENV=production //окружение для продакшена
