@@ -28,27 +28,21 @@ echo "✅ APP_KEY generated"
 
 # 3. УСТАНАВЛИВАЕМ ЗАВИСИМОСТИ, ЕСЛИ vendor ОТСУТСТВУЕТ
 
-cd /var/www && composer install --no-interaction --optimize-autoloader
+composer install --no-interaction --optimize-autoloader
 echo "✅ Composer dependencies installed"
 
 
 # 4. УСТАНАВЛИВАЕМ NPM-ЗАВИСИМОСТИ И СОБИРАЕМ ФРОНТ, ЕСЛИ НЕТ МАНИФЕСТА
 
-cd /var/www
-php artisan key:generate
-npm install
-php artisan ziggy:generate
-npm run build
-echo "✅ Frontend built"
-
 php artisan migrate --seed
-
-
-# 6. ЗАПУСКАЕМ SUPERVISOR
-exec /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
 
 sleep 10
 
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
+
+
+# 6. ЗАПУСКАЕМ SUPERVISOR
+exec /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
+

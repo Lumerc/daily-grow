@@ -14,9 +14,11 @@ RUN apt-get update && apt-get install -y wget gnupg2 \
     && apt-get update && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
     
-# PHP расширения
+# Установка PHP расширений (включая redis через PECL)
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
-    && pecl install redis && docker-php-ext-enable redis
+    && pecl install redis \
+    && docker-php-ext-enable redis
+  
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -25,6 +27,13 @@ WORKDIR /var/www
 
 # Копируем проект (но НЕ создаём файлы)
 COPY src/ .
+
+RUN npm install -g puppeteer-core ioredis
+
+# Фронтенд
+RUN npm install \
+    && php artisan ziggy:generate \
+    && npm run build
 
 # Копируем entrypoint (он будет создавать всё при запуске)
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
