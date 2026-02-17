@@ -42,7 +42,7 @@ echo "✅ APP_KEY generated"
 
 # 4. УСТАНАВЛИВАЕМ NPM-ЗАВИСИМОСТИ И СОБИРАЕМ ФРОНТ, ЕСЛИ НЕТ МАНИФЕСТА
 
-php artisan migrate --seed
+php artisan migrate --seed --force
 
 php artisan config:clear
 php artisan cache:clear
